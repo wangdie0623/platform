@@ -425,4 +425,13 @@ class SimpleHttpHelper implements IHttpHelper {
     public Header[] getRespHeaders() {
         return respHeaders;
     }
+
+    @Override
+    public void closeAll() {
+        try {
+            client.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

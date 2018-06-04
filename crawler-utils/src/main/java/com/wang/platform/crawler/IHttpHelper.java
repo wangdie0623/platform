@@ -185,4 +185,9 @@ public interface IHttpHelper {
      * @return
      */
     Header[] getRespHeaders();
+
+    /**
+     * 释放资源
+     */
+    void closeAll();
 }

@@ -1,0 +1,11 @@
+spring:
+  cloud:
+    config:
+      server:
+        #本地配置文件
+         native:
+           search-locations: classpath:/config
+            #配置文件仓库地址
+        #git:
+         # uri: https://github.com/wangdie0623/config-test
+

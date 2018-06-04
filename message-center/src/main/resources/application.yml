@@ -1,0 +1,26 @@
+spring:
+  kafka:
+    producer:
+      #请求完整性条件 all 最可靠 性能最低，发送时阻塞
+      acks: all
+      #发送失败 重试次数 设置0 避免出现重复消息
+      retries: 0
+      #指定单次请求缓冲大小
+      batch-size: 16384
+      #缓冲区最大值
+      buffer-memory: 33554432
+      #compression-type: 压缩格式
+    consumer:
+      #消费者分组
+      group-id: test
+    #kafka机器地址
+    bootstrap-servers: localhost:9090
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://localhost:3306/message_center
+    username: root
+    password: w123456
+
+mybatis:
+  mapper-locations: classpath:mappers/**/*.xml
+

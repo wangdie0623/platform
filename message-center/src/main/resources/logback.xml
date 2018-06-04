@@ -1,0 +1,5 @@
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+    <springProperty scope="context" name="app.name" source="spring.application.name" />
+    <springProperty scope="context" name="log.path" source="logging.path" />
+    <include resource="log-base.xml"/>
+</configuration>
