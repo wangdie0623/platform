@@ -4,12 +4,10 @@ package com.wang.platform.message.controller;
 import com.wang.platform.beans.ResultInfo;
 import com.wang.platform.message.entity.ConsumerSetting;
 import com.wang.platform.message.service.IConsumerService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@Slf4j
 @RequestMapping("msg-c/consumers")
 public class MessageCenterApiController {
     @Autowired
@@ -17,14 +15,26 @@ public class MessageCenterApiController {
 
     @GetMapping
     public ResultInfo consumers(ConsumerSetting consumer) {
-        return ResultInfo.ok("消费者集合", consumerService.getConsumers(consumer));
+        return ResultInfo.ok("查询消费者集合成功", consumerService.getConsumers(consumer));
     }
 
     @PostMapping
     public ResultInfo buildConsumer(@RequestBody ConsumerSetting consumer) {
-        if (consumer.invalid()) {
-            return ResultInfo.fail("topic,appName,uri不能为空");
-        }
-        throw new RuntimeException("暂未实现");
+        consumerService.build(consumer);
+        return ResultInfo.ok("新建消费者成功");
+    }
+
+    @PutMapping
+    public ResultInfo edit(@RequestBody ConsumerSetting consumer) {
+        consumerService.edit(consumer);
+        return ResultInfo.ok("修改消费者成功");
+    }
+
+    @DeleteMapping
+    public ResultInfo destroy(@RequestParam Integer id) {
+        ConsumerSetting consumer = new ConsumerSetting();
+        consumer.setId(id);
+        consumerService.destroy(consumer);
+        return ResultInfo.ok("注销消费者成功");
     }
 }

@@ -11,8 +11,41 @@
         <result property="updateTime" column="update_time"/>
     </resultMap>
 
+    <select id="selectById" resultMap="BaseMap">
+        select * from consumer_setting where id=#{id}
+    </select>
     <select id="selectAll" resultMap="BaseMap">
         select * from consumer_setting
+    </select>
+
+    <select id="selectByEntity" resultMap="BaseMap">
+        select * from consumer_setting
+        <where>
+            <if test="obj!=null">
+                <if test="obj.id!=null">
+                    id=#{obj.id}
+                </if>
+                <if test="obj.appName!=null">
+                    and app_name=#{obj.appName}
+                </if>
+                <if test="obj.topic!=null">
+                    and topic=#{obj.topic}
+                </if>
+                <if test="obj.uri!=null">
+                    and uri=#{obj.uri}
+                </if>
+                <if test="obj.status!=null">
+                    and status=#{obj.status}
+                </if>
+            </if>
+
+            <if test="startTime!=null">
+                and create_time &gt;= #{startTime}
+            </if>
+            <if test="endTime!=null">
+                and create_time &lt;= #{endTime}
+            </if>
+        </where>
     </select>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">

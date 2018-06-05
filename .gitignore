@@ -1,0 +1,38 @@
+# IntelliJ project files
+.idea
+*.iml
+out
+gen
+
+# Log file
+*.log
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+
+
+commons/src/test/
+commons/target/
+crawler-utils/src/test/
+message-center/src/test/
+message-center/target/
+service-discovery/src/test/
+service-discovery/target/
+spring-config-client/src/test/
+spring-config-client/target/
+spring-config/src/test/
+ui-api/src/test/
+website-plugins/src/test/

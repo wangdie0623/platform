@@ -20,18 +20,13 @@ public interface IConsumerService {
     void destroy(ConsumerSetting consumer);
 
     /**
-     * 更改消费者状态
+     * 更改消费者
      *
      * @param consumer
      */
-    void changeStatus(ConsumerSetting consumer);
+    void edit(ConsumerSetting consumer);
 
-    /**
-     * 更改消费者关联资源 uri
-     *
-     * @param consumer
-     */
-    void changeUri(ConsumerSetting consumer);
+
 
     /**
      * 获取单个消费者

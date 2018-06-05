@@ -2,6 +2,7 @@ package com.wang.platform.message.aspect;
 
 
 import com.wang.platform.beans.ResultInfo;
+import com.wang.platform.message.exceptions.ServiceException;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -22,6 +23,9 @@ public class BaseAspect {
     public Object error(ProceedingJoinPoint pjp) throws Throwable {
         try {
             return pjp.proceed();
+        } catch (ServiceException e) {
+            log.error(appName + "服务层异常", e);
+            return ResultInfo.fail(e.getMsg());
         } catch (Exception e) {
             log.error(appName + "异常", e);
             return ResultInfo.fail(appName + "服务器异常");
