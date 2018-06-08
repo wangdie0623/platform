@@ -13,8 +13,17 @@ spring:
     consumer:
       #消费者分组
       group-id: test
+      autoOffsetReset: earliest
+      properties:
+        #设置主题信息更新间隔 默认无法设置 好像是5分钟 设置后延时3秒更新，不懂啊...
+        metadata.max.age.ms: 10000
+      #禁用自动提交offset
+      enable-auto-commit: false
     #kafka机器地址
     bootstrap-servers: localhost:9090
+    listener:
+      #开启手动提交
+      ack-mode: manual_immediate
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     url: jdbc:mysql://localhost:3306/message_center

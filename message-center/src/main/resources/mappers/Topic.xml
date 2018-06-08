@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wang.platform.message.dao.TopicDao">
+    <resultMap id="BaseMap" type="com.wang.platform.message.entity.Topic">
+        <id property="name" column="name"/>
+        <result property="numPartitions" column="num_partitions"/>
+        <result property="replicationFactor" column="replication_factor"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <select id="selectById" resultMap="BaseMap">
+        select * from topic where name=#{id}
+    </select>
+    <select id="selectAll" resultMap="BaseMap">
+        select * from topic
+    </select>
+
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert ignore into topic(name,num_partitions,replication_factor)
+        values (#{name},#{numPartitions},#{replicationFactor})
+    </insert>
+
+    <delete id="del">
+        delete from topic where name=#{id}
+    </delete>
+
+    <update id="update">
+        update consumer_setting
+        <set>
+            <if test="name!=null">
+                name =#{name},
+            </if>
+            <if test="numPartitions!=null">
+                num_partitions=#{numPartitions},
+            </if>
+            <if test="replicationFactor!=null">
+                replication_factor=#{replicationFactor},
+            </if>
+            <if test="updateTime!=null">
+                update_time=#{updateTime},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+</mapper>

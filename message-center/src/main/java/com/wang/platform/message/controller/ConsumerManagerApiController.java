@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("msg-c/consumers")
-public class MessageCenterApiController {
+public class ConsumerManagerApiController {
     @Autowired
     private IConsumerService consumerService;
 
