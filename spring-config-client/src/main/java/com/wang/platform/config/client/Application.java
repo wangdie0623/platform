@@ -11,7 +11,6 @@ import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@EnableAutoConfiguration(exclude = DataSourceAutoConfiguration.class)
 public class Application {
     @Bean
     @LoadBalanced

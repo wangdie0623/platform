@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("msg-c/consumers")
+@RequestMapping("consumers")
 public class ConsumerManagerApiController {
     @Autowired
     private IConsumerService consumerService;

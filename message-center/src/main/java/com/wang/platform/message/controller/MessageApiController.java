@@ -1,8 +1,8 @@
 package com.wang.platform.message.controller;
 
 import com.wang.platform.beans.ResultInfo;
+import com.wang.platform.beans.TopicMsg;
 import com.wang.platform.message.config.TopicsConfig;
-import com.wang.platform.message.controller.params.TopicMsg;
 import com.wang.platform.message.service.IKafkaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("msg-c")
+@RequestMapping("msg")
 public class MessageApiController {
     @Autowired
     private IKafkaService kafkaService;
 
-    @PostMapping("msg")
+    @PostMapping
     public ResultInfo sendMsg(@RequestBody TopicMsg params) {
         if (params.invalid()) {
             return ResultInfo.fail("topic,data不能为空");

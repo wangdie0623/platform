@@ -1,4 +1,4 @@
-package com.wang.platform.message.controller.params;
+package com.wang.platform.beans;
 
 import lombok.Getter;
 import lombok.Setter;

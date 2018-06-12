@@ -37,7 +37,7 @@ public class SwaggerConfig {
     @Bean
     public Docket customImplementation() {
         String pack = this.getClass().getPackage().getName().replace(".config", ".controller");
-        String uri = "/" + appName + "/**";
+        String uri = "/**";
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage(pack))

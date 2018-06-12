@@ -33,3 +33,10 @@ spring:
 mybatis:
   mapper-locations: classpath:mappers/**/*.xml
 
+info:
+    app:
+      #导入pom文件信息
+      name: '@project.name@'
+      description: '@project.description@'
+      version: '@project.version@'
+      parent-version: '@project.parent.version@'

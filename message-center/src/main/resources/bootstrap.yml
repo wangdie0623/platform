@@ -27,13 +27,6 @@ management:
       #开启健康检查
       enabled: true
 
-info:
-    app:
-     #导入pom文件信息
-     name: "@project.name@"
-     description: "@project.description@"
-     version: "@project.version@"
-     parent-version: "@project.parent.version@"
 
 springfox:
   documentation:
@@ -41,5 +34,4 @@ springfox:
       v2:
         #默认选项
         path: /api-docs
-logging:
-  path: /logs/${spring.application.name}
+
