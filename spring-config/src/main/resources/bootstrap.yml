@@ -1,8 +1,45 @@
-spring:
-  profiles:
-    active: native
-  application:
-    name: config-server
-
 server:
+  #指定端口号
   port: 8888
+
+spring:
+  application:
+    #指定应用名称 指定配置服务名称
+    name: @project.name@
+  cloud:
+    config:
+      server:
+        #本地配置文件
+         #native:
+           #search-locations: classpath:/config
+        #配置文件仓库地址
+        git:
+          #指定仓库地址
+          uri: https://github.com/wangdie0623/platform-config
+          #指定配置文件所在目录
+          search-paths: /**
+      #指定仓库分支名
+      label: master
+  profiles:
+    active: @active@
+
+eureka:
+  instance:
+    #服务标识
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+    #服务续约到期时间 单位秒
+    lease-expiration-duration-in-seconds: 10
+    #服务续约间隔时间 单位秒
+    lease-renewal-interval-in-seconds: 5
+
+info:
+    app:
+      #导入pom文件信息
+      name: '@project.name@'
+      description: '@project.description@'
+      version: '@project.version@'
+      parent-version: '@project.parent.version@'
+
+
+
+

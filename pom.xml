@@ -19,6 +19,7 @@
         <module>spring-config-client</module>
         <module>ui-api</module>
         <module>message-center</module>
+        <module>redis-service</module>
     </modules>
 
     <!--spring boot 微服务版本指定-->
@@ -118,8 +119,30 @@
         </dependencies>
     </dependencyManagement>
 
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <active>dev</active>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+    </profiles>
 
     <build>
+        <resources>
+            <!--添加资源-->
+            <resource>
+                <directory>${basedir}/src/main/resources</directory>
+                <includes>
+                    <include>**/*.yml</include>
+                </includes>
+                <!--开启配置文件变量过滤-->
+                <filtering>true</filtering>
+            </resource>
+        </resources>
         <pluginManagement>
 
         </pluginManagement>

@@ -6,6 +6,24 @@ import com.wang.platform.beans.ResultInfo;
 public interface IWebsitePlugin {
 
     ResultInfo loadingLoginInfo(AuthInfo authInfo);
+
+    /**
+     * 刷新验证码图片
+     * @return
+     */
+    ResultInfo restImgCode();
+
+    /**
+     * 刷新二维码图片
+     * @return
+     */
+    ResultInfo restQRCode();
+
+    /**
+     * 刷新短信码
+     * @return
+     */
+    ResultInfo restPhoneCode();
     /**
      * 登录
      *
@@ -19,6 +37,7 @@ public interface IWebsitePlugin {
      * @return
      */
     ResultInfo collect();
+
 
     /**
      * 解析格式化

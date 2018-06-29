@@ -1,6 +1,7 @@
 package com.wang.platform.plugins.website;
 
 import com.wang.platform.beans.AuthInfo;
+import com.wang.platform.beans.Field;
 import com.wang.platform.beans.ResultInfo;
 import com.wang.platform.beans.LoginInfo;
 import com.wang.platform.enums.CrawlerCodeEnum;
@@ -25,7 +26,9 @@ public class Book17K extends AbstractWebsitePlugin {
     public ResultInfo loadingLoginInfo(AuthInfo authInfo) {
         this.token = authInfo.getToken();
         LoginInfo info = LoginInfo.simpleAccount(token);
-
+        Field field = new Field();
+        field.setName();
+        info.setFields();
         return ResultInfo.create(CrawlerCodeEnum.LOGIN_INFO_SUCCESS, info);
     }
 
@@ -98,14 +101,5 @@ public class Book17K extends AbstractWebsitePlugin {
         }
     }
 
-    public static void main(String[] args) {
-        Book17K book17K = new Book17K();
-        Map<String, String> map = new HashMap<>();
-        map.put("account", "13127760242");
-        map.put("password", "w65379521");
-        map.put("token", "xx");
-        AuthInfo info = new AuthInfo(map);
-        book17K.execute(info);
 
-    }
 }
