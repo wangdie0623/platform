@@ -1,4 +1,4 @@
-package com.wang.platform.message.aspect;
+package com.wang.platform.redis.aspect;
 
 
 import com.wang.platform.beans.ResultInfo;
@@ -19,7 +19,7 @@ public class BaseAspect {
     @Value("${spring.application.name}")
     private String appName;
 
-    @Around("execution(* com.wang.platform.message.controller.*.*(..))")
+    @Around("execution(* com.wang.platform.redis.controller.*.*(..))")
     public Object error(ProceedingJoinPoint pjp) throws Throwable {
         try {
             return pjp.proceed();

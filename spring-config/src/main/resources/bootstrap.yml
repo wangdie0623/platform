@@ -31,6 +31,8 @@ eureka:
     lease-expiration-duration-in-seconds: 10
     #服务续约间隔时间 单位秒
     lease-renewal-interval-in-seconds: 5
+    #替换域名为ip地址
+    prefer-ip-address: true
 
 info:
     app:
