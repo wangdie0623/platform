@@ -62,7 +62,7 @@ public class HttpPoolFactory {
      * @param cookieStore
      * @return
      */
-    public static CloseableHttpClient getHttpClient(CookieStore cookieStore) {
+    public static CloseableHttpClient getHttpClient(CustomCookieStore cookieStore) {
         CloseableHttpClient httpClient = HttpClients.custom()
                 .setConnectionManager(pollManger)
                 .setDefaultCookieStore(cookieStore)

@@ -1,4 +1,4 @@
-package com.wang.platform.plugins;
+package com.wang.platform.plugins.website;
 
 import com.wang.platform.beans.AuthInfo;
 import com.wang.platform.beans.ResultInfo;

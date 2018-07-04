@@ -1,16 +1,20 @@
-package com.wang.platform.plugins;
+package com.wang.platform.plugins.website;
 
 import com.wang.platform.beans.AuthInfo;
 import com.wang.platform.beans.ResultInfo;
 import com.wang.platform.crawler.HttpHelperBuilder;
 import com.wang.platform.crawler.IHttpHelper;
-import com.wang.platform.plugins.fegin.IRedisService;
+import com.wang.platform.enums.CrawlerCodeEnum;
 
 public abstract class AbstractWebsitePlugin implements IWebsitePlugin {
 
     protected IHttpHelper httpHelper = HttpHelperBuilder.builderDefault();
 
-    private IRedisService redisService;
+    protected String homeUrl;//主页地址
+    protected String codeUrl;//图片验证码刷新地址
+    protected String qCodeUrl;//二维码图片刷新地址
+    protected String phoneCodeUrl;//短信验证刷新地址
+
 
     @Override
     public void execute(AuthInfo authInfo) {
@@ -32,16 +36,18 @@ public abstract class AbstractWebsitePlugin implements IWebsitePlugin {
 
     @Override
     public ResultInfo restImgCode() {
-        return null;
+        return ResultInfo.create(CrawlerCodeEnum.CONTROL_ERROR, "暂未实现");
     }
 
     @Override
     public ResultInfo restQRCode() {
-        return null;
+        return ResultInfo.create(CrawlerCodeEnum.CONTROL_ERROR, "暂未实现");
     }
 
     @Override
     public ResultInfo restPhoneCode() {
-        return null;
+        return ResultInfo.create(CrawlerCodeEnum.CONTROL_ERROR, "暂未实现");
     }
+
+
 }

@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebFilter(filterName = "cross-origin", urlPatterns = "/*")
-@Order(0)//最高优先级
+@Order(999)//最高优先级
 @Slf4j
 public class CrossOriginFilter implements Filter {
 

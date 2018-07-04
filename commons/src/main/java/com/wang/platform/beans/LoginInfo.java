@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@Slf4j
 @Setter
 public class LoginInfo {
     private String token;
@@ -20,24 +19,24 @@ public class LoginInfo {
         List<Field> list = new ArrayList<>();
         info.fields = list;
         list.add(primaryField);
-        list.add(Field.password());
+        list.add(Field.PWD);
         return info;
     }
 
     public static LoginInfo simplePhone(String token) {
-        return simple(token, Field.phone());
+        return simple(token, Field.PHONE);
     }
 
     public static LoginInfo simpleEmail(String token) {
-        return simple(token, Field.email());
+        return simple(token, Field.EMAIL);
     }
 
     public static LoginInfo simpleAccount(String token) {
-        return simple(token, Field.account());
+        return simple(token, Field.ACCOUNT);
     }
 
     public static LoginInfo simpleQQ(String token) {
-        return simple(token, Field.qq());
+        return simple(token, Field.QQ);
     }
 
 }

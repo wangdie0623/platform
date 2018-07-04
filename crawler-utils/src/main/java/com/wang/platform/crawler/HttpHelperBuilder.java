@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class HttpHelperBuilder {
 
     private ConcurrentHashMap<String, String> defaultHeaders;
-    private CookieStore cookieStore;
+    private CustomCookieStore cookieStore;
     private RequestConfig config;
 
     private HttpHelperBuilder() {
@@ -42,7 +42,7 @@ public class HttpHelperBuilder {
         return new HttpHelperBuilder();
     }
 
-    public HttpHelperBuilder setCookie(CookieStore cookie) {
+    public HttpHelperBuilder setCookie(CustomCookieStore cookie) {
         this.cookieStore = cookie;
         return this;
     }

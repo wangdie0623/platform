@@ -1,11 +1,11 @@
-package com.wang.platform.plugins.website;
+package com.wang.platform.plugins.website.site;
 
 import com.wang.platform.beans.AuthInfo;
 import com.wang.platform.beans.Field;
 import com.wang.platform.beans.ResultInfo;
 import com.wang.platform.beans.LoginInfo;
 import com.wang.platform.enums.CrawlerCodeEnum;
-import com.wang.platform.plugins.*;
+import com.wang.platform.plugins.website.AbstractWebsitePlugin;
 import com.wang.platform.utils.RegexUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -13,7 +13,6 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.ByteArrayInputStream;
 import java.io.FileOutputStream;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -26,9 +25,7 @@ public class Book17K extends AbstractWebsitePlugin {
     public ResultInfo loadingLoginInfo(AuthInfo authInfo) {
         this.token = authInfo.getToken();
         LoginInfo info = LoginInfo.simpleAccount(token);
-        Field field = new Field();
-        field.setName();
-        info.setFields();
+        info.getFields().add(Field.CODE);
         return ResultInfo.create(CrawlerCodeEnum.LOGIN_INFO_SUCCESS, info);
     }
 

@@ -3,6 +3,7 @@ package com.wang.platform.crawler;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.parser.Feature;
+import com.wang.platform.exceptions.ServiceException;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanUtils;
@@ -37,7 +38,7 @@ class SimpleHttpHelper implements IHttpHelper {
 
     private Map<String, String> defaultHeaders = getDefaultHeaders();
     private static final String DEFAULT_CHARSET = "UTF-8";
-    private CookieStore cookieStore;
+    private CustomCookieStore cookieStore;
     private final Map<String, String> globalHeaders = getDefaultHeaders();
     private final Map<String, String> addHeaders = getDefaultHeaders();
     private final Set<String> removeHeaders = ConcurrentHashMap.newKeySet();
@@ -53,7 +54,7 @@ class SimpleHttpHelper implements IHttpHelper {
             .build();//全局请求参数设置 如代理，超时
     private RequestConfig config = globalConfig;//单次请求设置
 
-    public SimpleHttpHelper(CookieStore cookieStore) {
+    public SimpleHttpHelper(CustomCookieStore cookieStore) {
         this.cookieStore = cookieStore;
         this.client = HttpPoolFactory.getHttpClient(cookieStore);
     }
@@ -152,12 +153,29 @@ class SimpleHttpHelper implements IHttpHelper {
 
     }
 
+    private void verfiyStatus(CloseableHttpResponse response) {
+        int code = response.getStatusLine().getStatusCode();
+        switch (code) {
+            case 200:
+                return;
+            case 404:
+                throw new ServiceException("404页面未找到");
+            case 403:
+                throw new ServiceException("403访问被拒绝");
+            case 500:
+                throw new ServiceException("500服务器异常");
+            default:
+                log.warn("爬虫状态码{}", code);
+        }
+    }
+
     /**
      * 获取响应主体
      *
      * @param response
      */
     private void getRespContent(CloseableHttpResponse response) {
+        verfiyStatus(response);
         clearHeaders();
         clearConfig();
         recordRespInfo(response);
