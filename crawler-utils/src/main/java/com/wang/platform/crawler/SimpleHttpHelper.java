@@ -26,6 +26,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +39,7 @@ class SimpleHttpHelper implements IHttpHelper {
 
     private Map<String, String> defaultHeaders = getDefaultHeaders();
     private static final String DEFAULT_CHARSET = "UTF-8";
-    private CustomCookieStore cookieStore;
+    private CookieStore cookieStore;
     private final Map<String, String> globalHeaders = getDefaultHeaders();
     private final Map<String, String> addHeaders = getDefaultHeaders();
     private final Set<String> removeHeaders = ConcurrentHashMap.newKeySet();
@@ -54,9 +55,14 @@ class SimpleHttpHelper implements IHttpHelper {
             .build();//全局请求参数设置 如代理，超时
     private RequestConfig config = globalConfig;//单次请求设置
 
-    public SimpleHttpHelper(CustomCookieStore cookieStore) {
+    public SimpleHttpHelper(CookieStore cookieStore) {
         this.cookieStore = cookieStore;
         this.client = HttpPoolFactory.getHttpClient(cookieStore);
+    }
+
+    public SimpleHttpHelper(CloseableHttpClient client) {
+        this.client = client;
+        this.cookieStore = null;
     }
 
     /**
@@ -153,7 +159,7 @@ class SimpleHttpHelper implements IHttpHelper {
 
     }
 
-    private void verfiyStatus(CloseableHttpResponse response) {
+    private void verifyStatus(CloseableHttpResponse response) {
         int code = response.getStatusLine().getStatusCode();
         switch (code) {
             case 200:
@@ -175,7 +181,7 @@ class SimpleHttpHelper implements IHttpHelper {
      * @param response
      */
     private void getRespContent(CloseableHttpResponse response) {
-        verfiyStatus(response);
+        verifyStatus(response);
         clearHeaders();
         clearConfig();
         recordRespInfo(response);
@@ -290,7 +296,8 @@ class SimpleHttpHelper implements IHttpHelper {
         try {
             RequestBuilder requestBuilder = RequestBuilder.get();
             loadConfig(requestBuilder);
-            HttpUriRequest method = requestBuilder.setUri(url + "?" + params).build();
+            HttpUriRequest method = requestBuilder.setUri(url + "?" + params)
+                    .build();
             loadHeaders(method);
             CloseableHttpResponse response = client.execute(method);
             getRespContent(response);

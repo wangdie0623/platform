@@ -11,7 +11,7 @@ import java.util.List;
 @Setter
 public class LoginInfo {
     private String token;
-    private List<Field> fields;
+    private List fields;
 
     private static LoginInfo simple(String token, Field primaryField) {
         LoginInfo info = new LoginInfo();

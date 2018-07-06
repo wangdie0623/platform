@@ -120,6 +120,9 @@ public class RedisServiceImpl implements IRedisService {
 
     @Override
     public List<Map.Entry<String, String>> keys(String queryStr) {
+        if (StringUtils.isBlank(queryStr)){
+            throw new ServiceException("哈哈，测试成功");
+        }
         Set<String> keys = template.keys(StringUtils.isBlank(queryStr) ? "*" : queryStr);
         if (keys == null || keys.size() == 0) {
             return null;

@@ -1,16 +1,16 @@
 package com.wang.platform.crawler;
 
 import org.apache.http.HttpHost;
+import org.apache.http.client.CookieStore;
 import org.apache.http.client.config.RequestConfig;
-import org.apache.http.impl.client.BasicCookieStore;
+import org.apache.http.impl.client.CloseableHttpClient;
 
-import java.net.CookieStore;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class HttpHelperBuilder {
 
     private ConcurrentHashMap<String, String> defaultHeaders;
-    private CustomCookieStore cookieStore;
+    private CookieStore cookieStore;
     private RequestConfig config;
 
     private HttpHelperBuilder() {
@@ -19,9 +19,9 @@ public class HttpHelperBuilder {
     public IHttpHelper builder() {
         SimpleHttpHelper result = null;
         if (cookieStore != null) {
-            result = new SimpleHttpHelper(new BasicCookieStore());
+            result = new SimpleHttpHelper(new CustomCookieStore());
         } else {
-            result = new SimpleHttpHelper(new BasicCookieStore());
+            result = new SimpleHttpHelper(new CustomCookieStore());
         }
         if (defaultHeaders != null) {
             result.setDefaultHeaders(defaultHeaders);
@@ -35,14 +35,18 @@ public class HttpHelperBuilder {
     }
 
     public static IHttpHelper builderDefault() {
-        return new SimpleHttpHelper(new BasicCookieStore());
+        return new SimpleHttpHelper(HttpPoolFactory.getHttpClient());
+    }
+
+    public static IHttpHelper builderDefault(CloseableHttpClient client) {
+        return new SimpleHttpHelper(client);
     }
 
     public static HttpHelperBuilder custom() {
         return new HttpHelperBuilder();
     }
 
-    public HttpHelperBuilder setCookie(CustomCookieStore cookie) {
+    public HttpHelperBuilder setCookie(CookieStore cookie) {
         this.cookieStore = cookie;
         return this;
     }
@@ -61,19 +65,11 @@ public class HttpHelperBuilder {
         this.config = RequestConfig
                 .copy(HttpPoolFactory.DEFAULT_CONF)
                 .setProxy(new HttpHost(host, port, "http"))
+
                 .build();
         return this;
     }
 
-    public static void main(String[] args) {
-        ConcurrentHashMap<String, String> map = new ConcurrentHashMap<>();
-        map.put("xx", "fff");
-        IHttpHelper helper = HttpHelperBuilder
-                .custom()
-                .setConfig("192.168.200.140", 6666)
-                .builder();
-        System.out.println(helper.doGet("http://192.168.100.194:8080/header").respStr());
-    }
 
 }
 

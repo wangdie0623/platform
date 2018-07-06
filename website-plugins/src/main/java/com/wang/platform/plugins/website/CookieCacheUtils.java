@@ -18,7 +18,7 @@ import java.util.List;
 @Component
 public class CookieCacheUtils {
     private static final String COOKIE_CACHE_KEY = "webPlugin:cookies";//爬虫cookie存放地址key
-    public static RedisFeign feign;
+    private static RedisFeign feign;
 
     @Autowired
     public static void setFeign(RedisFeign feign) {
@@ -30,28 +30,51 @@ public class CookieCacheUtils {
     }
 
     /**
-     * 保存cookie信息到redis
+     * 保存cookieStore格式cookie信息到redis
      *
      * @param cookieStore
      * @param token
      */
-    public static void cacheCookie(CookieStore cookieStore, String token) {
+    public static void cacheCookieStore(CookieStore cookieStore, String token) {
         String json = CookieUtils.toJson(cookieStore);
-        feign.pushObjM(cookieKey(token), json, 10l);
+        cacheCookieStr(token, json);
     }
 
     /**
-     * 获取redis存在cookie值
+     * 保存字符串形式cookie
+     *
+     * @param token
+     * @param cookies
+     */
+    public static void cacheCookieStr(String token, String cookies) {
+        feign.pushObjM(cookieKey(token), cookies, 10l);
+    }
+
+    /**
+     * 获取redis存在cookieStore格式值
      *
      * @param token
      * @return
      */
-    public static List<Cookie> getCookies(String token) {
+    public static List<Cookie> getCookieStore(String token) {
         ResultInfo info = feign.fullVal(cookieKey(token));
         if (info.getDetail() == null || info.getDetail().equals("")) {
             throw new ServiceException(String.format("%s cookie不存在", token));
         }
         String jsonArr = info.getDetail().toString();
         return CookieUtils.jsonToCookie(jsonArr);
+    }
+
+    /**
+     * 获取字符串格式cookie值
+     * @param token
+     * @return
+     */
+    public static String getCookieStr(String token) {
+        ResultInfo info = feign.fullVal(cookieKey(token));
+        if (info.getDetail() == null || info.getDetail().equals("")) {
+            throw new ServiceException(String.format("%s cookie不存在", token));
+        }
+        return info.toString();
     }
 }

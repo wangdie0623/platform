@@ -29,4 +29,17 @@
         </dependency>
 
     </dependencies>
+
+    <build>
+        <plugins>
+            <!--当非spring-boot项目需跳过spring-boot打包插件-->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

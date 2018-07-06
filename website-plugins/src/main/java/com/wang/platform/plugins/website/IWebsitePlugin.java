@@ -2,10 +2,11 @@ package com.wang.platform.plugins.website;
 
 import com.wang.platform.beans.AuthInfo;
 import com.wang.platform.beans.ResultInfo;
+import com.wang.platform.crawler.IHttpHelper;
 
 public interface IWebsitePlugin {
 
-    ResultInfo loadingLoginInfo(AuthInfo authInfo);
+
 
     /**
      * 刷新验证码图片
@@ -60,4 +61,6 @@ public interface IWebsitePlugin {
      * 释放资源
      */
     void closeAll();
+
+
 }

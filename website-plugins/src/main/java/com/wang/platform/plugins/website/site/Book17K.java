@@ -1,10 +1,10 @@
 package com.wang.platform.plugins.website.site;
 
 import com.wang.platform.beans.AuthInfo;
-import com.wang.platform.beans.Field;
 import com.wang.platform.beans.ResultInfo;
-import com.wang.platform.beans.LoginInfo;
+import com.wang.platform.crawler.IHttpHelper;
 import com.wang.platform.enums.CrawlerCodeEnum;
+import com.wang.platform.plugins.annotations.Site;
 import com.wang.platform.plugins.website.AbstractWebsitePlugin;
 import com.wang.platform.utils.RegexUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -17,16 +17,13 @@ import java.util.Map;
 import java.util.Scanner;
 
 @Slf4j
+@Site("book17k")
 public class Book17K extends AbstractWebsitePlugin {
     private Map<String, String> data;
     private String token;
 
-    @Override
-    public ResultInfo loadingLoginInfo(AuthInfo authInfo) {
-        this.token = authInfo.getToken();
-        LoginInfo info = LoginInfo.simpleAccount(token);
-        info.getFields().add(Field.CODE);
-        return ResultInfo.create(CrawlerCodeEnum.LOGIN_INFO_SUCCESS, info);
+    public Book17K(IHttpHelper httpHelper) {
+        super(httpHelper);
     }
 
     @Override
