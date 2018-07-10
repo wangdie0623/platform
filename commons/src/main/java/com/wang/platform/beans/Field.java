@@ -2,21 +2,29 @@ package com.wang.platform.beans;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
 @AllArgsConstructor
-public enum Field {
-    PHONE("phone", "text", "请输入手机号",null),
-    EMAIL("email", "text", "请输入邮箱",null),
-    QQ("qq", "text", "请输入qq号",null),
-    CODE("CODE", "text", "请输入图片验证码",null),
-    Q_CODE("QCODE", "img", null,null),
-    PHONE_CODE("phoneCode", "text", "请输入手机短信码",null),
-    ACCOUNT("account", "text", "请输入账号",null),
-    PWD("pwd", "password", "请输入密码",null),
-    NAME("name", "text", "请输入姓名",null),
-    ID_CARD_NUM("idCardNum", "text", "请输入身份证",null);
+public class Field {
+    public static final Field PHONE = new Field("phone", "text", "请输入手机号", null);
+
+    public static final Field EMAIL = new Field("email", "text", "请输入邮箱", null);
+
+    public static final Field QQ = new Field("qq", "text", "请输入qq号", null);
+
+    public static final Field CODE = new Field("code", "text", "请输入图片验证码", null);
+
+    public static final Field Q_CODE = new Field("qcode", "img", null, null);
+
+    public static final Field PHONE_CODE = new Field("phoneCode", "text", "请输入手机短信码", null);
+
+    public static final Field ACCOUNT = new Field("account", "text", "请输入账号", null);
+
+    public static final Field PWD = new Field("pwd", "password", "请输入密码", null);
+
+    public static final Field NAME = new Field("name", "text", "请输入姓名", null);
+
+    public static final Field ID_CARD_NUM = new Field("idCardNum", "text", "请输入身份证", null);
 
 
     private String name;
@@ -24,16 +32,5 @@ public enum Field {
     private String desc;
     private String defaultValue;
 
-    public static Field getEnum(String name) {
-        for (Field field : values()) {
-            if (field.getName().equalsIgnoreCase(name)) {
-                return field;
-            }
-        }
-        return null;
-    }
 
-    public static void main(String[] args) {
-        getEnum("email").getName();
-    }
 }

@@ -15,11 +15,7 @@ import org.springframework.context.annotation.FilterType;
 @Slf4j
 @SpringBootApplication
 @EnableDiscoveryClient
-@ComponentScan(
-        basePackages = {"com.wang.platform"},
-        excludeFilters = {
-        @ComponentScan.Filter(type = FilterType.CUSTOM, classes = TypeExcludeFilter.class),
-        @ComponentScan.Filter(type = FilterType.CUSTOM, classes = AutoConfigurationExcludeFilter.class) })
+@ComponentScan(basePackages = {"com.wang.platform"})
 public class Application implements ApplicationRunner {
     public static void main(String[] args) {
         SpringApplication.run(Application.class);
@@ -28,6 +24,6 @@ public class Application implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-       log.info("redis服务启动");
+        log.info("redis服务启动");
     }
 }

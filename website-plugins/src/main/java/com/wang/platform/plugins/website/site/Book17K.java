@@ -1,42 +1,52 @@
 package com.wang.platform.plugins.website.site;
 
-import com.wang.platform.beans.AuthInfo;
-import com.wang.platform.beans.ResultInfo;
+import com.wang.platform.beans.*;
 import com.wang.platform.crawler.IHttpHelper;
+import com.wang.platform.enums.Base64ImageType;
 import com.wang.platform.enums.CrawlerCodeEnum;
 import com.wang.platform.plugins.annotations.Site;
 import com.wang.platform.plugins.website.AbstractWebsitePlugin;
+import com.wang.platform.plugins.website.CookieCacheUtils;
+import com.wang.platform.utils.Base64ImgUtils;
 import com.wang.platform.utils.RegexUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.ByteArrayInputStream;
-import java.io.FileOutputStream;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
-import java.util.Scanner;
 
 @Slf4j
 @Site("book17k")
 public class Book17K extends AbstractWebsitePlugin {
-    private Map<String, String> data;
-    private String token;
+    private Map<String, Object> userInfo;
 
     public Book17K(IHttpHelper httpHelper) {
         super(httpHelper);
     }
 
+
     @Override
-    public ResultInfo login(AuthInfo authInfo) {
+    public ResultInfo loginInfo(BaseCrawlerParam param) {
+        LoginInfo loginInfo = LoginInfo.simpleAccount("book17k");
+        loginInfo.getFields().add(Field.CODE);
+        CookieCacheUtils.cacheCookieSet(param.getToken(), Collections.emptySet());
+        homeUrl = "http://www.17k.com/";
+        httpHelper.doGet(homeUrl);
+        return ResultInfo.create(CrawlerCodeEnum.LOGIN_INFO_SUCCESS, loginInfo);
+    }
+
+    @Override
+    public ResultInfo login(CrawlerLoginParam param) {
         try {
-            this.data = authInfo.getData();
-            String account = data.get("account");
-            String password = data.get("password");
-            String homeUrl = "http://www.17k.com/";
-            httpHelper.doGet(homeUrl);
+            this.userInfo = param.getData();
+            String account = MapUtils.getString(userInfo, "account");
+            String password = MapUtils.getString(userInfo, "pwd");
+            String code = MapUtils.getString(userInfo, "code");
             String loginUrl = "http://passport.17k.com/login.action?jsonp=true";
-            String code = getCode();
             String params = "userName=%s&password=%s&verificationCode=%s&isCode=1&isAutoLogin=true&postCallback=parent.Q.post_artwc_callback";
+            homeUrl = "http://www.17k.com/";
             httpHelper.addHeader("Referer", homeUrl);
             String result = httpHelper.doPostForm(loginUrl, String.format(params, account, password, code)).respStr();
             String error_code = RegexUtil.getValue("\"error_code\":(.*),", result, 1).trim();
@@ -45,6 +55,7 @@ public class Book17K extends AbstractWebsitePlugin {
             if (!StringUtils.isBlank(error_code)) {
                 return ResultInfo.create(CrawlerCodeEnum.LOGIN_FAIL, error_msg);
             }
+            execute();//执行异步采集流程
             return ResultInfo.create(CrawlerCodeEnum.LOGIN_SUCCESS);
         } catch (Exception e) {
             log.error("登录异常", e);
@@ -54,7 +65,10 @@ public class Book17K extends AbstractWebsitePlugin {
 
     @Override
     public ResultInfo collect() {
-        return null;
+        String userInfoURL = "http://passport.17k.com/get_info_cookie?callback=Q._40_3796_17&jsonp=Q._40_3796_17";
+        String str = httpHelper.doGet(userInfoURL).respStr();
+        System.out.println(str);
+        return ResultInfo.fail("");
     }
 
     @Override
@@ -67,32 +81,12 @@ public class Book17K extends AbstractWebsitePlugin {
         return null;
     }
 
-
-    private String getCode() {
-        String code = null;
-        int count = 1;
-        while (code == null && count <= 3) {
-            String codeUrl = "http://passport.17k.com/mcode.jpg?" + new Date().getTime();
-            byte[] respData = httpHelper.doGet(codeUrl).getRespData();
-            saveCodeImg(respData);
-            Scanner scanner = new Scanner(System.in);
-            code = scanner.nextLine();
-            count++;
-        }
-        return code;
-    }
-
-    private void saveCodeImg(byte[] data) {
-        try (ByteArrayInputStream in = new ByteArrayInputStream(data);
-             FileOutputStream out = new FileOutputStream("x.jpg")) {
-            byte[] temp = new byte[1024];
-            for (int index = in.read(temp); index != -1; index = in.read(temp)) {
-                out.write(temp, 0, index);
-            }
-            out.flush();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    @Override
+    public ResultInfo restImgCode(BaseCrawlerParam param) {
+        String codeUrl = "http://passport.17k.com/mcode.jpg?" + new Date().getTime();
+        byte[] imgData = httpHelper.doGet(codeUrl).getRespData();
+        String imgStr = Base64ImgUtils.getImgStr(imgData, Base64ImageType.JPG);
+        return ResultInfo.create(CrawlerCodeEnum.CODE_IMG_SUCCESS, "刷新成功", imgStr);
     }
 
 

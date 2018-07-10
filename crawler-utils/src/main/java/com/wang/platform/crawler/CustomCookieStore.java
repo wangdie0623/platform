@@ -4,6 +4,7 @@ import org.apache.http.client.CookieStore;
 import org.apache.http.cookie.Cookie;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class CustomCookieStore implements CookieStore, Serializable {
 
     @Override
     public List<Cookie> getCookies() {
-        return null;
+        return new ArrayList<>();
     }
 
     @Override

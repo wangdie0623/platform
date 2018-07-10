@@ -8,10 +8,16 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-
+    <name>website_plugins</name>
+    <description>爬虫插件</description>
     <artifactId>website-plugins</artifactId>
     <version>1.0-SNAPSHOT</version>
     <dependencies>
+        <dependency>
+            <groupId>io.github.openfeign</groupId>
+            <artifactId>feign-httpclient</artifactId>
+            <version>9.5.1</version>
+        </dependency>
         <dependency>
             <groupId>com.wang.platform</groupId>
             <artifactId>commons</artifactId>
@@ -60,5 +66,9 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
+
+
+
+
     </dependencies>
 </project>

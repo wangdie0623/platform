@@ -2,6 +2,7 @@ package com.wang.platform.crawler;
 
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.entity.ContentType;
@@ -64,7 +65,7 @@ public class HttpConvertUtils {
                 map.put(itemArr[0], o);
                 continue;
             } catch (Exception e) {
-                log.error("值非json", e);
+                //log.error("值非json");
             }
             map.put(itemArr[0], val);
         }
@@ -150,6 +151,7 @@ public class HttpConvertUtils {
 
     /**
      * httpParams转换为formPair
+     *
      * @param params
      * @return
      */
@@ -162,10 +164,11 @@ public class HttpConvertUtils {
             return null;
         }
         NameValuePair[] result = new NameValuePair[map.size()];
-        int index=0;
+        int index = 0;
         for (Map.Entry<String, Object> entry : map.entrySet()) {
-            BasicNameValuePair pair = new BasicNameValuePair(entry.getKey(), entry.getValue().toString());
-            result[index]=pair;
+            BasicNameValuePair pair = new BasicNameValuePair(entry.getKey(),
+                    entry.getValue() == null ? "" : entry.getValue().toString());
+            result[index] = pair;
             index++;
         }
         return result;

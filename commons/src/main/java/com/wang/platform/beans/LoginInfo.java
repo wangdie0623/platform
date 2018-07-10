@@ -10,12 +10,12 @@ import java.util.List;
 @Getter
 @Setter
 public class LoginInfo {
-    private String token;
+    private String siteName;
     private List fields;
 
     private static LoginInfo simple(String token, Field primaryField) {
         LoginInfo info = new LoginInfo();
-        info.token = token;
+        info.siteName = token;
         List<Field> list = new ArrayList<>();
         info.fields = list;
         list.add(primaryField);
@@ -23,20 +23,20 @@ public class LoginInfo {
         return info;
     }
 
-    public static LoginInfo simplePhone(String token) {
-        return simple(token, Field.PHONE);
+    public static LoginInfo simplePhone(String siteName) {
+        return simple(siteName, Field.PHONE);
     }
 
-    public static LoginInfo simpleEmail(String token) {
-        return simple(token, Field.EMAIL);
+    public static LoginInfo simpleEmail(String siteName) {
+        return simple(siteName, Field.EMAIL);
     }
 
-    public static LoginInfo simpleAccount(String token) {
-        return simple(token, Field.ACCOUNT);
+    public static LoginInfo simpleAccount(String siteName) {
+        return simple(siteName, Field.ACCOUNT);
     }
 
-    public static LoginInfo simpleQQ(String token) {
-        return simple(token, Field.QQ);
+    public static LoginInfo simpleQQ(String siteName) {
+        return simple(siteName, Field.QQ);
     }
 
 }

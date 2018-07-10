@@ -2,16 +2,14 @@ package com.wang.platform.plugins.website;
 
 import com.wang.platform.beans.ResultInfo;
 import com.wang.platform.crawler.CookieUtils;
-import com.wang.platform.exceptions.ServiceException;
 import com.wang.platform.plugins.fegin.RedisFeign;
 import com.wang.platform.utils.RedisKeyUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.client.CookieStore;
 import org.apache.http.cookie.Cookie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import java.util.Set;
 
 
 @Slf4j
@@ -21,7 +19,7 @@ public class CookieCacheUtils {
     private static RedisFeign feign;
 
     @Autowired
-    public static void setFeign(RedisFeign feign) {
+    public void setFeign(RedisFeign feign) {
         CookieCacheUtils.feign = feign;
     }
 
@@ -30,18 +28,18 @@ public class CookieCacheUtils {
     }
 
     /**
-     * 保存cookieStore格式cookie信息到redis
+     * 保存cookie集合到redis
      *
-     * @param cookieStore
+     * @param cookies
      * @param token
      */
-    public static void cacheCookieStore(CookieStore cookieStore, String token) {
-        String json = CookieUtils.toJson(cookieStore);
+    public static void cacheCookieSet(String token, Set<Cookie> cookies) {
+        String json = CookieUtils.toJson(cookies);
         cacheCookieStr(token, json);
     }
 
     /**
-     * 保存字符串形式cookie
+     * 保存字符串cookie到redis
      *
      * @param token
      * @param cookies
@@ -51,30 +49,19 @@ public class CookieCacheUtils {
     }
 
     /**
-     * 获取redis存在cookieStore格式值
+     * 根据token获取cookie集合
      *
      * @param token
      * @return
      */
-    public static List<Cookie> getCookieStore(String token) {
+    public static Set<Cookie> getCookieSet(String token) {
         ResultInfo info = feign.fullVal(cookieKey(token));
         if (info.getDetail() == null || info.getDetail().equals("")) {
-            throw new ServiceException(String.format("%s cookie不存在", token));
+            throw new TokenInvalidException(String.format("%s cookie不存在", token));
         }
         String jsonArr = info.getDetail().toString();
         return CookieUtils.jsonToCookie(jsonArr);
     }
 
-    /**
-     * 获取字符串格式cookie值
-     * @param token
-     * @return
-     */
-    public static String getCookieStr(String token) {
-        ResultInfo info = feign.fullVal(cookieKey(token));
-        if (info.getDetail() == null || info.getDetail().equals("")) {
-            throw new ServiceException(String.format("%s cookie不存在", token));
-        }
-        return info.toString();
-    }
+
 }

@@ -7,11 +7,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.context.annotation.ComponentScan;
 
+@Slf4j
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableFeignClients
-@Slf4j
+@ComponentScan(basePackages = "com.wang.platform")
 public class Application implements ApplicationRunner {
     public static void main(String[] args) {
         SpringApplication.run(Application.class);

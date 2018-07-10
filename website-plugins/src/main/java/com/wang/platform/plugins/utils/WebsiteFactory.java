@@ -12,13 +12,37 @@ import org.apache.http.impl.client.CloseableHttpClient;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Proxy;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 public class WebsiteFactory {
-    //站点类清单
-    private static final List<Class> classes = AnnotationsSearch
-            .searchAnnotationClass(IWebsitePlugin.class.getPackage().getName(), Site.class);
+
+    private static final Map<String, Class> SITE_MAP = getMap();
+
+    /**
+     * 获取站点插件映射
+     *
+     * @return
+     */
+    private static Map<String, Class> getMap() {
+        try {
+            List<Class> classes = AnnotationsSearch
+                    .searchAnnotationClass(IWebsitePlugin.class.getPackage().getName(), Site.class);
+            Map<String, Class> map = new HashMap<>();
+            for (Class item : classes) {
+                Site site = (Site) item.getAnnotation(Site.class);
+                map.put(site.value(), item);
+            }
+            return map;
+        } catch (Exception e) {
+            log.error("加载站点映射异常", e);
+            return Collections.emptyMap();
+        }
+    }
+
 
     /**
      * 获取站点对应对象
@@ -28,17 +52,15 @@ public class WebsiteFactory {
      */
     public static IWebsitePlugin getSite(String name) {
         IWebsitePlugin bean = null;
-        for (Class item : classes) {
-            Site site = (Site) item.getAnnotation(Site.class);
-            if (site.value().equalsIgnoreCase(name)) {
-                try {
-                    Constructor constructor = item.getConstructor(new Class[]{IHttpHelper.class});
-                    bean = (IWebsitePlugin) constructor.newInstance(getHelper(name));
-                    break;
-                } catch (Exception e) {
-                    log.error("创建站点对象异常", e);
-                }
+        try {
+            Class clazz = SITE_MAP.get(name);
+            if (clazz == null) {
+                return null;
             }
+            Constructor constructor = clazz.getConstructor(new Class[]{IHttpHelper.class});
+            bean = (IWebsitePlugin) constructor.newInstance(getHelper(name));
+        } catch (Exception e) {
+            log.error("创建站点插件异常", e);
         }
         return bean;
     }
@@ -50,8 +72,8 @@ public class WebsiteFactory {
      * @return
      */
     private static IHttpHelper getHelper(String name) {
-        SiteClientEnums book17k = SiteClientEnums.getEnum(name);
-        CloseableHttpClient client = book17k.getClient();
+        SiteClientEnums siteEnum = SiteClientEnums.getEnum(name);
+        CloseableHttpClient client = siteEnum.getClient();
         IHttpHelper target = HttpHelperBuilder.builderDefault(client);
         HttpHelperProxy proxy = new HttpHelperProxy(target);
         IHttpHelper helper = (IHttpHelper) Proxy.newProxyInstance(

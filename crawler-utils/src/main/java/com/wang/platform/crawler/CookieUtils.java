@@ -5,32 +5,44 @@ import com.wang.platform.utils.BeanCopyUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.http.Header;
 import org.apache.http.HeaderElement;
-import org.apache.http.client.CookieStore;
 import org.apache.http.cookie.Cookie;
-import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.impl.cookie.NetscapeDraftHeaderParser;
+import org.apache.http.message.BasicHeader;
 import org.apache.http.message.ParserCursor;
 import org.apache.http.util.CharArrayBuffer;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class CookieUtils {
 
-    public static String toJson(CookieStore cookieStore) {
-        List<Cookie> cookies = cookieStore.getCookies();
+    /**
+     * 得到json格式cookie集合
+     *
+     * @param cookies
+     * @return
+     */
+    public static String toJson(Set<Cookie> cookies) {
         return JSON.toJSONString(cookies);
     }
 
-    public static List<Cookie> jsonToCookie(String arrStr) {
-        List<Map<String, String>> jsonArr = JSON.parseObject(arrStr, List.class);
-        List<Cookie> list = new ArrayList<>();
+    /**
+     * 转换json字符串为cookie集合
+     *
+     * @param arrStr
+     * @return
+     */
+    public static Set<Cookie> jsonToCookie(String arrStr) {
+        Set<Map<String, String>> jsonArr = JSON.parseObject(arrStr, Set.class);
+        Set<Cookie> set = new HashSet<>();
         jsonArr.forEach(it -> {
-            BasicClientCookie cookie = new BasicClientCookie(MapUtils.getString(it, "name"),
+            CustomCookie cookie = new CustomCookie(MapUtils.getString(it, "name"),
                     MapUtils.getString(it, "value"));
             BeanCopyUtils.copyProperties(cookie, it);
-            list.add(cookie);
+            set.add(cookie);
         });
-        return list;
+        return set;
     }
 
     /**
@@ -66,6 +78,8 @@ public class CookieUtils {
     }
 
     /**
+     * 将旧cookie跟新响应cookie合并
+     *
      * @param oldCookies
      * @param respHeaders
      * @return
@@ -88,13 +102,32 @@ public class CookieUtils {
         return newCookies;
     }
 
+    /**
+     * cookie集合转字符串
+     *
+     * @param cookies
+     * @return
+     */
+    public static String setToStr(Set<Cookie> cookies) {
+        if (cookies == null || cookies.size() == 0) {
+            return "";
+        }
+        StringBuilder builder = new StringBuilder();
+        cookies.forEach(it -> {
+            builder.append(it.getName() + "=" + it.getValue() + ";");
+        });
+        builder.deleteCharAt(builder.length() - 1);
+        return builder.toString();
+    }
+
     public static void main(String[] args) {
-        CustomCookie one = new CustomCookie("xx", "");
-        CustomCookie two= new CustomCookie("xx", "1");
-        Set<Cookie> result = new HashSet<>();
-        result.add(one);
-        result.remove(one);
-        result.add(two);
-        System.out.println(result);
+        IHttpHelper helper = HttpHelperBuilder.builderDefault();
+        Header[] headers = helper.doGet("https://passport.csdn.net/account/login?from=https://mp.csdn.net/")
+                .getRespHeaders();
+        BasicHeader header = new BasicHeader("set-cookie",
+                "Hm_lvt_6bcd52f51e9b3dce32bec4a3997715ac=1530844983,1530847613,1530849612,1530867361; JSESSIONID=35892B8971685AB156E32E18DEAF1BF5.tomcat1; LSSC=LSSC-1401510-vWtcFWNlqIgGoQj1JdCb9SgR4UU2wd-passport.csdn.net; Hm_lpvt_6bcd52f51e9b3dce32bec4a3997715ac=1530867363; dc_tos=pbfste");
+        headers[0]=header;
+        Set<Cookie> cookies = newCookies(null, headers);
+        System.out.println(setToStr(cookies));
     }
 }

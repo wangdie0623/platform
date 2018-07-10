@@ -23,5 +23,6 @@ public enum CrawlerCodeEnum {
     QCODE_IMG_FAIL("3399"), QCODE_IMG_SUCCESS("3300"),
     CONTROL_ERROR("3999");
 
+
     private String code;
 }

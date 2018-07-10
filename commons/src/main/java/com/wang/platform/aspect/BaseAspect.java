@@ -12,24 +12,11 @@ import javax.servlet.http.HttpServletRequest;
 
 
 @Slf4j
-
 @RestControllerAdvice
 public class BaseAspect {
     @Value("${spring.application.name}")
     private String appName;
-//
-//    @Around("execution(* com.wang.platform..*.controller..*(..))")
-//    public Object error(ProceedingJoinPoint pjp) throws Throwable {
-//        try {
-//            return pjp.proceed();
-//        } catch (ServiceException e) {
-//            log.error(appName + "服务层异常", e);
-//            return ResultInfo.fail(e.getMsg());
-//        } catch (Exception e) {
-//            log.error(appName + "异常", e);
-//            return ResultInfo.fail(appName + "服务器异常");
-//        }
-//    }
+
 
     @ExceptionHandler(ServiceException.class)
     public ResultInfo handServiceException(ServiceException exception, HttpServletRequest request) {

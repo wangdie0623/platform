@@ -1,36 +1,47 @@
 package com.wang.platform.plugins.website;
 
-import com.wang.platform.beans.AuthInfo;
+import com.wang.platform.beans.BaseCrawlerParam;
+import com.wang.platform.beans.CrawlerLoginParam;
 import com.wang.platform.beans.ResultInfo;
-import com.wang.platform.crawler.IHttpHelper;
 
 public interface IWebsitePlugin {
 
 
-
     /**
      * 刷新验证码图片
+     *
      * @return
      */
-    ResultInfo restImgCode();
+    ResultInfo restImgCode(BaseCrawlerParam param);
 
     /**
      * 刷新二维码图片
+     *
      * @return
      */
-    ResultInfo restQRCode();
+    ResultInfo restQRCode(BaseCrawlerParam param);
 
     /**
      * 刷新短信码
+     *
      * @return
      */
-    ResultInfo restPhoneCode();
+    ResultInfo restPhoneCode(BaseCrawlerParam param);
+
+    /**
+     * 获取登录消息
+     *
+     * @param param
+     * @return
+     */
+    ResultInfo loginInfo(BaseCrawlerParam param);
+
     /**
      * 登录
      *
      * @return
      */
-    ResultInfo login(AuthInfo authInfo);
+    ResultInfo login(CrawlerLoginParam param);
 
     /**
      * 采集
@@ -52,10 +63,6 @@ public interface IWebsitePlugin {
      */
     ResultInfo saveData();
 
-    /**
-     * 执行完整采集流程
-     */
-    void execute(AuthInfo authInfo);
 
     /**
      * 释放资源

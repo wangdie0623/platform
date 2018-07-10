@@ -75,6 +75,12 @@ public class ResultInfo {
         return fail(msg, codeEnum.getCode());
     }
 
+    public static ResultInfo create(CrawlerCodeEnum codeEnum, String msg, Object detail) {
+        ResultInfo info = create(codeEnum, msg);
+        info.setDetail(detail);
+        return info;
+    }
+
     public static ResultInfo create(CrawlerCodeEnum codeEnum) {
         return create(codeEnum, null);
     }
