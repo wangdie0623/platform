@@ -1,50 +1,47 @@
 spring:
   application:
-    #应用名称
-    name: ui
-
+    #应用名称，及远程配置中心文件前缀
+    name: '@project.name@'
+  cloud:
+    config:
+      #git 仓库版本或是本地文件native则无效
+      label: master
+      #指定远程配置文件后缀
+      profile: @active@
+      discovery:
+       #配置服务 注册标识
+        service-id: configServer
+        #是否开启配置服务注册加载
+        enabled: true
+  profiles:
+    #指定本地配置文件后缀
+    active: @active@
 server:
   #端口号
-  port: 9000
+  port: 8083
 
 eureka:
-  client:
-    service-url:
-        #eureka-server 地址
-        defaultZone: http://localhost:8761/eureka/
-
   instance:
     #服务标识
     instance-id: ${spring.cloud.client.ip-address}:${server.port}
-    #服务续约到期时间 单位秒
+    #服务无心跳失效时间 单位秒
     lease-expiration-duration-in-seconds: 10
-    #服务续约间隔时间 单位秒
+    #服务心跳发送间隔时间 单位秒
     lease-renewal-interval-in-seconds: 5
-
-management:
-  health:
-    defaults:
-      #开启健康检查
-      enabled: true
-    elasticsearch:
-      response-timeout:
+    #替换域名为ip地址
+    prefer-ip-address: true
 
 info:
     app:
-     #导入pom文件信息
-     name: "@project.name@"
-     description: "@project.description@"
-     version: "@project.version@"
-     parent-version: "@project.parent.version@"
-
-springfox:
-  documentation:
-    swagger:
-      v2:
-        #默认选项
-        path: /api-docs
+      #导入pom文件信息
+      name: '@project.name@'
+      description: '@project.description@'
+      version: '@project.version@'
+      parent-version: '@project.parent.version@'
 ribbon:
     #内容响应超时时间
     ReadTimeout: 60000
     #建立连接超时时间
     ConnectTimeout: 1000
+
+

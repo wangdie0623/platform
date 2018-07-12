@@ -1,10 +1,13 @@
 package com.wang.platform.plugins.website.site;
 
-import com.wang.platform.beans.*;
+import com.wang.platform.beans.BaseCrawlerParam;
+import com.wang.platform.beans.CrawlerLoginParam;
+import com.wang.platform.beans.ResultInfo;
 import com.wang.platform.crawler.IHttpHelper;
 import com.wang.platform.enums.Base64ImageType;
 import com.wang.platform.enums.CrawlerCodeEnum;
 import com.wang.platform.plugins.annotations.Site;
+import com.wang.platform.plugins.beans.Website;
 import com.wang.platform.plugins.website.AbstractWebsitePlugin;
 import com.wang.platform.plugins.website.CookieCacheUtils;
 import com.wang.platform.utils.Base64ImgUtils;
@@ -29,12 +32,10 @@ public class Book17K extends AbstractWebsitePlugin {
 
     @Override
     public ResultInfo loginInfo(BaseCrawlerParam param) {
-        LoginInfo loginInfo = LoginInfo.simpleAccount("book17k");
-        loginInfo.getFields().add(Field.CODE);
         CookieCacheUtils.cacheCookieSet(param.getToken(), Collections.emptySet());
         homeUrl = "http://www.17k.com/";
         httpHelper.doGet(homeUrl);
-        return ResultInfo.create(CrawlerCodeEnum.LOGIN_INFO_SUCCESS, loginInfo);
+        return ResultInfo.create(CrawlerCodeEnum.LOGIN_INFO_SUCCESS, Website.BOOK17K);
     }
 
     @Override

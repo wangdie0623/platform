@@ -11,6 +11,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 @AllArgsConstructor
 @Getter
 public enum SiteClientEnums {
+    DEFAULT("", HttpPoolFactory.getHttpClient(new CustomCookieStore())),
     BOOK_17K("book17k", HttpPoolFactory.getHttpClient(new CustomCookieStore()));
     private String name;
     private CloseableHttpClient client;
@@ -21,6 +22,6 @@ public enum SiteClientEnums {
                 return item;
             }
         }
-        return null;
+        return DEFAULT;
     }
 }

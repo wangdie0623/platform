@@ -10,6 +10,7 @@ public class ResultInfo {
     private static final String DEFAULT_FAIL_CODE = "500";
     private static final String DEFAULT_SUCCESS_CODE = "200";
     private String msg;
+    private String token;
     private boolean success;
     private String code;
     private Object detail;

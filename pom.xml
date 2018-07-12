@@ -11,12 +11,11 @@
 
     <modules>
         <module>service-discovery</module>
+        <module>spring-config</module>
         <module>sys-admin</module>
         <module>crawler-utils</module>
         <module>website-plugins</module>
         <module>commons</module>
-        <module>spring-config</module>
-        <module>spring-config-client</module>
         <module>ui-api</module>
         <module>message-center</module>
         <module>redis-service</module>

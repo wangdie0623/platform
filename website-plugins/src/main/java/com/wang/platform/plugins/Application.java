@@ -21,6 +21,6 @@ public class Application implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        log.info("webPlugins项目启动成功");
+        log.info("web-plugins项目启动成功");
     }
 }

@@ -1,4 +1,4 @@
-package com.wang.platform.beans;
+package com.wang.platform.plugins.beans;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
