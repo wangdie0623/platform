@@ -1,4 +1,4 @@
-var webpack = require('webpack')
+var webpack = require('webpack');//引入webpack插件
 module.exports = {
     baseUrl: process.env.baseUrl,//项目发布地址
     outputDir: process.env.outputDir,//编译项目输出地址
